@@ -166,6 +166,7 @@ void _loadImage() async {
     }));
   }
 ```
+
 1.  [flutter怎么创建一个插件？](https://www.fullstackaction.com/pages/9a078b/)
 ```shell
 # 创建项目
@@ -176,3 +177,10 @@ flutter create --template=plugin --platforms=android,ios -i swift -a kotlin vide
 # 生成交互代码
 flutter pub run pigeon --input pigeons/cache.dart
 ```
+
+
+### 基础组件
+1. CustomMultiChildLayout自定义组件
+   参考此项目：https://pub.dev/packages/horizontal_data_table
+
+2. 
