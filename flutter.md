@@ -167,9 +167,9 @@ void _loadImage() async {
   }
 ```
 
-1.  [flutter怎么创建一个插件？](https://www.fullstackaction.com/pages/9a078b/)
+16. [flutter怎么创建一个插件？](https://www.fullstackaction.com/pages/9a078b/)
 ```shell
-# 创建项目
+# 创建项目 `-i objc -a java`
 flutter create --template=plugin --platforms=android,ios -i swift -a kotlin video_cache
 ```
 # cache.dart文件
@@ -178,9 +178,66 @@ flutter create --template=plugin --platforms=android,ios -i swift -a kotlin vide
 flutter pub run pigeon --input pigeons/cache.dart
 ```
 
+17. release编译报错
+```shell
+  * What went wrong:
+  Execution failed for task ':flutter_sound:verifyReleaseResources'.
+  > A failure occurred while executing com.android.build.gradle.tasks.VerifyLibraryResourcesTask$Action
+   > Android resource linking failed
+     ERROR:/Users/gerry/code/ronggao/shengyuapp/build/flutter_sound/intermediates/merged_res/release/values/values.xml:2536: AAPT: error: resource android:attr/lStar not found.
+```
+A: 在项目的`andriod/build`下修改
+```groovy
+// 顶部新增
+buildscript {
+    ext.kotlin_version = '1.8.10'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// 修改
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    afterEvaluate {
+        android {
+            compileSdkVersion 34
+        }
+    }
+}
+
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+```
+
+
+[官方](https://docs.flutter.cn/packages-and-plugins/developing-packages)
+```shell
+flutter create --org com.example --template=plugin --platforms=android,ios,linux,macos,windows -a kotlin hello
+```
+
 
 ### 基础组件
 1. CustomMultiChildLayout自定义组件
    参考此项目：https://pub.dev/packages/horizontal_data_table
 
-2. 
+2. 指示器自定义
